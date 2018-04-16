@@ -25,7 +25,7 @@ namespace MooServer.Controllers
         public bool addYieldMilkByLactation(YieldMilkLactation yieldLactation)
         {
             PredictionService service = new PredictionService();
-            service.teste2();
+            service.ForecastYieldCow(1);
             List<Yield> yields = new List<Yield>(); //= yieldLactation.yieldLactation.Cast<Yield>().ToList();
             //ServiceMilkCollection.AddYield(yieldLactation);
             if (yields == null)

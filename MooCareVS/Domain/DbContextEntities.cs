@@ -12,6 +12,7 @@ namespace Domain
     {
         public DbContextEntities(): base("dbContextEntities")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
         public DbSet<Cow> Cows { get; set; }

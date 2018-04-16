@@ -20,8 +20,9 @@ namespace Repositories
         }
         public Cow GetCow(int idCow)
         {
-            List<Cow> cows = db.Cows.ToList();
-            Cow cow = db.Cows.FirstOrDefault(c => c.idCow == idCow);
+            Cow cow = db.Cows
+                .Include("lactations.yields")
+                .FirstOrDefault(c => c.idCow == idCow);
             return cow;
         }
 
