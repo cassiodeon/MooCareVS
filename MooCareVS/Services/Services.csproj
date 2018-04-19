@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Helper\RScript.cs" />
     <Compile Include="MilkCollectionService.cs" />
+    <Compile Include="NotificationService.cs" />
     <Compile Include="PredictionService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

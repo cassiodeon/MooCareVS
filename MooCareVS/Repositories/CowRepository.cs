@@ -50,5 +50,6 @@ namespace Repositories
             yieldUpdate.totalYield = yield.totalYield;
             db.SaveChanges();
         }
+        
     }
 }

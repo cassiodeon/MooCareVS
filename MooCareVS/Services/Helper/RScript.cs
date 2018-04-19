@@ -11,15 +11,14 @@ namespace Services.Helper
     public static class RScript
     {
         static string rCodeFilePath = $"C:\\temp\\R\\";
+        static string rScriptExecutablePath = @"C:\Program Files\R\R-3.4.2\bin\Rscript.exe";
 
-        public static string Run(string fileName, string param = "")
+        public static string Run(string fileName, string[] param = null)
         {
             //string rCodeFilePath = $"D:\\DemoApps\\R\\NorthwindDashboard\\Analytics\\{filename}.R";
             string rCodeFile = $"{rCodeFilePath}{fileName}.R";
-            if (param != "")
-                rCodeFile = $"{rCodeFilePath} {param}";
-
-            string rScriptExecutablePath = @"C:\Program Files\R\R-3.4.2\bin\Rscript.exe";
+            if (param != null)
+                rCodeFile = $"{rCodeFile} {string.Join(" ",param)}";
 
             string result = string.Empty;
 
@@ -50,7 +49,7 @@ namespace Services.Helper
             catch (Exception ex)
             {
                 //return false;
-                throw new Exception("R Script failed: " + result, ex);
+                throw new Exception("Falha ao executar a previsão. Detalhes: R Script failed: " + result, ex);
 
             }
         }

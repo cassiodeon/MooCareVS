@@ -18,5 +18,6 @@ namespace Domain
         public DbSet<Cow> Cows { get; set; }
         public DbSet<Lactation> Lactations { get; set; }
         public DbSet<Yield> Yields { get; set; }
+        public DbSet<Notification> Notification { get; set; }
     }
 }

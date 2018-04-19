@@ -22,7 +22,7 @@ namespace Services
             repoCow = new CowRepository();
         }
 
-        public void ForecastYieldCow(int idCow)
+        public double ForecastYieldCow(int idCow)
         {
             double forecastValue = 0;
             
@@ -41,7 +41,13 @@ namespace Services
                     forecastValue = ForecastValue(idCow);
                 else
                     throw new Exception("Number of records is insufficient");
+
+                //CHAMA VERIFYPREDICTION
+                NotificationService x = new NotificationService();
+                x.ValidateDataCow(idCow, currentLact, forecastValue);
             }
+            
+            return forecastValue;
         }
 
         private double ForecastValue(int idCow)
@@ -84,10 +90,11 @@ namespace Services
                 string result = Helper.RScript.Run("yield");
                 result = result.Substring(result.IndexOf(" ") + 1).Replace(Environment.NewLine, "");
                 if (result != "")
-                    forecastValue = Double.Parse(result, new System.Globalization.CultureInfo("en-US"));
+                    forecastValue = double.Parse(result, new System.Globalization.CultureInfo("en-US"));
             }
 
             return forecastValue;
         }
+        
     }
 }
