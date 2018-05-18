@@ -18,6 +18,18 @@ namespace Repositories
         {
             db = new DbContextEntities();
         }
+
+        public IEnumerable<Cow> GetAllCows(string[] includes = null)
+        {
+            includes = includes ?? new string[0];
+            IQueryable<Cow> queryInclude = db.Cows;
+
+            foreach (var include in includes)
+                queryInclude = queryInclude.Include(include);
+
+            return queryInclude;
+        }
+
         public Cow GetCow(int idCow)
         {
             Cow cow = db.Cows

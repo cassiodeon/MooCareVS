@@ -17,5 +17,8 @@ namespace Domain.Entities
 
         [ForeignKey("idCow")]
         public virtual ICollection<Lactation> lactations { get; set; }
+
+        [ForeignKey("idCow")]
+        public virtual ICollection<Food> foods { get; set; }
     }
 }

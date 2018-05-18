@@ -15,6 +15,7 @@ namespace Domain.Entities
         public int idNotification { get; set; }
         public string type { get; set; }
         public string description { get; set; }
+        public bool read { get; set; }
         public int idLactation { get; set; }
 
         [ForeignKey("idLactation")]

@@ -40,5 +40,21 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/chart")
     @RenderSection("scripts", required: false)
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $.ajax({
+                    method: "GET",
+                    url: "@Url.Content("~/")api/InterfaceService/GetNewsNotifications",
+                    cache: false
+                })
+                .done(function (data) {
+                    if (data != null) {
+                        alert(data);
+                    }
+                });
+            });
+        </script>
+    
 </body>
 </html>

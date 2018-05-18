@@ -14,11 +14,13 @@ namespace Services
     {
         CowRepository cowRepo;
         LactationRepository lactationRepo;
+        NotificationRepository notificationRepo;
 
         public NotificationService()
         {
             cowRepo = new CowRepository();
             lactationRepo = new LactationRepository();
+            notificationRepo = new NotificationRepository();
         }
 
         public void ValidateDataCow(int idCow, Lactation currentLactation, double forecastValue)
@@ -65,6 +67,7 @@ namespace Services
                 if (yieldEMACurrentLactation < (yieldEMALastLactation - yieldEMALastLactation * threshould))
                 {
                     //NOTIFICAÇÃO!
+                    AddNotification("CURRENT", currentLactation.idLactation, "");
                     throw new Exception("NOTIFICATION - BAD CURRENT LACTATION");
                 }
             }
@@ -100,9 +103,27 @@ namespace Services
                 if (forecastValue < (yieldEMALastLactation - yieldEMALastLactation * threshould))
                 {
                     //NOTIFICAÇÃO!
+                    AddNotification("PREDICTION", currentLactation.idLactation, "");
                     throw new Exception("NOTIFICATION - BAD PREDICTION");
                 }
             }
+        }
+
+        public void AddNotification(string type, int idLactation, string description = "")
+        {
+            Notification notification = new Notification()
+            {
+                type = type,
+                idLactation = idLactation,
+                read = false,
+                description = description
+            };
+            notificationRepo.AddNotification(notification);
+        }
+
+        public void UpdateNotification(Notification notification)
+        {
+            notificationRepo.UpdateNotification(notification);
         }
     }
 }

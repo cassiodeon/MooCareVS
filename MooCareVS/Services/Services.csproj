@@ -55,7 +55,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FoodService.cs" />
     <Compile Include="Helper\RScript.cs" />
+    <Compile Include="InterfaceService.cs" />
     <Compile Include="MilkCollectionService.cs" />
     <Compile Include="NotificationService.cs" />
     <Compile Include="PredictionService.cs" />
@@ -72,9 +74,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Analytics\lactation-EMA.R" />
+    <None Include="Analytics\prediction-yield.R" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

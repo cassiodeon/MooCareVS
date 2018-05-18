@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="DbContextEntities.cs" />
     <Compile Include="Entities\Cow.cs" />
+    <Compile Include="Entities\Food.cs" />
     <Compile Include="Entities\Lactation.cs" />
     <Compile Include="Entities\Notification.cs" />
     <Compile Include="Entities\Yield.cs" />
