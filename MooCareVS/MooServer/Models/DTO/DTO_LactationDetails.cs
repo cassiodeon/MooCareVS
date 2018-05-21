@@ -9,7 +9,7 @@ namespace MooServer.Models.DTO
     {
         public int idLactation { get; set; }
         public List<DTO_Yield> yields { get; set; }
-        public double[] yieldEMA { get; set; }
+        public string[] yieldEMA { get; set; }
     }
 
     public class DTO_Yield

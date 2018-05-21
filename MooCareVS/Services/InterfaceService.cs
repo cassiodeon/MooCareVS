@@ -15,6 +15,7 @@ namespace Services
         LactationRepository lactationRepo;
         NotificationRepository notificationRepo;
         PredictionService predictionService;
+        FoodService foodService;
 
         public InterfaceService()
         {
@@ -22,6 +23,7 @@ namespace Services
             lactationRepo = new LactationRepository();
             notificationRepo = new NotificationRepository();
             predictionService = new PredictionService();
+            foodService = new FoodService();
         }
 
         public List<Cow> GetAllCows()
@@ -54,9 +56,10 @@ namespace Services
             return notificationRepo.GetNotificationByCow(idCow).ToList();
         }
 
-        public double[] GetLactationEMA(int idLactation)
+        public string[] GetLactationEMA(int idLactation)
         {
-            double[] lactationEMA;
+            double[] lactationEMA = null;
+            string[] lactation = null;
             string result = string.Empty;
             //Parametros windowSize e idLactation
             int goahead = int.Parse(ConfigurationManager.AppSettings["goahead"]);
@@ -65,16 +68,13 @@ namespace Services
             if (result != "")
             {
                 //Obtem os dados
-                result = result.Replace('.', ',');
-                string[] arrayResult = result.Replace("NA", "0").Split(' ');
-                lactationEMA = Array.ConvertAll(arrayResult, Double.Parse);
-            }
-            else
-            {
-                lactationEMA = null;
+                //result = result.Replace('.', ',');
+                //string[] arrayResult = result.Replace("NA", "0").Split(' ');
+                lactation = result.Split(' ');
+                //lactationEMA = Array.ConvertAll(arrayResult, Double.Parse);
             }
 
-            return lactationEMA;
+            return lactation;
         }
 
         public double GetPrediction(int idCow)
@@ -82,6 +82,21 @@ namespace Services
             double predictionValue;
             predictionValue = predictionService.ForecastValue(idCow);
             return predictionValue;
+        }
+
+        public List<Food> GetAllFoodByCow(int idCow)
+        {
+            return foodService.GetAllFoodByCow(idCow);
+        }
+
+        public List<Food> GetFoodByLactation(int idLactation)
+        {
+            return foodService.GetFoodByLactation(idLactation);
+        }
+
+        public double GetFoodByCowToday(int idCow)
+        {
+            return foodService.GetFoodByCowToday(idCow);
         }
     }
 }

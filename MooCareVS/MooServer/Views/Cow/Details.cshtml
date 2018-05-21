@@ -1,5 +1,4 @@
 ﻿@using Domain.Entities
-
 @model IEnumerable<Lactation>
 
 @{
@@ -71,7 +70,25 @@
         <div role="tabpanel" class="tab-pane" id="food">
             <div>
                 <h4>Food</h4>
-                <canvas id="chartFood"></canvas>
+                <center>
+                    <table class="table table-striped table-bordered" style="width:60%">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Food food in ViewBag.foods)
+                            {
+                                <tr>
+                                    <td>@food.date.ToShortDateString()</td>
+                                    <td>@food.quantity</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </center>
             </div>
         </div>
 
@@ -84,18 +101,18 @@
                             <th width="15%">ID</th>
                             <th width="40%" data-field="birthday">Type</th>
                             <th width="15%" data-field="birthday">Lactation</th>
-                            <th width="15%">Read</th>
+                            <th width="15%">Status</th>
                             <th width="15%">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (Notification notify in ViewBag.notifications)
                         {
-                            <tr @(notify.read == false ?"class='danger'":"")>
+                            <tr @(notify.read == false ? "class=danger" : "")>
                                 <td>@notify.idNotification</td>
                                 <td>@notify.type</td>
                                 <td>@notify.idLactation</td>
-                                <td>@(notify.read? "Read":"Not read")</td>
+                                <td>@(notify.read ? "Read" : "Not read")</td>
                                 <td>
                                     <a href='javascript:void(0)' class='btn btn-info btn-sm'>
                                         <span class='glyphicon glyphicon-eye-open'></span>
@@ -121,8 +138,11 @@
         var prediction = null;
 
         currentLactation = @Html.Raw(Json.Encode(ViewBag.currentLactation));
+        console.log("currentLactation");
+        console.log(currentLactation);
         lastLactation = @Html.Raw(Json.Encode(ViewBag.lastLactation));
-
+        console.log("lastLactation");
+        console.log(lastLactation);
         var labels;
         if(lastLactation != null){
             labels = Array.apply(null, {length: lastLactation.length}).map(Function.call, Number);
@@ -133,7 +153,7 @@
 
         if(currentLactation != null){
             //prediction = @Html.Raw(Json.Encode(ViewBag.currentLactation));
-            
+
             prediction = Array.apply(null, {length: (currentLactation.length + AHEAD - 1)}).map(function(e,i){return NaN});
             prediction[currentLactation.length - 1] = currentLactation[currentLactation.length - 1];
 

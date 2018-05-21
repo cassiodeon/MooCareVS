@@ -18,7 +18,8 @@ namespace MooServer.Controllers
         }
         public ActionResult Index()
         {
-            return View();
+            List<Cow> cows = interfaceService.GetAllCows();
+            return View(cows);
         }
 
         public ActionResult Details(int id)
@@ -31,6 +32,8 @@ namespace MooServer.Controllers
             ViewBag.currentLactation = interfaceService.GetLactationEMA(currentLactation.idLactation);
             ViewBag.lastLactation = interfaceService.GetLactationEMA(lastLactation.idLactation);
             ViewBag.notifications = interfaceService.GetNotificationCow(id);
+            ViewBag.foods = interfaceService.GetAllFoodByCow(id).OrderByDescending(f => f.date).ToList();
+
             double forecastValue = interfaceService.GetPrediction(id);
             ViewBag.forecastValue = forecastValue;
 

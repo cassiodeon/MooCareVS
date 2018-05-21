@@ -1,4 +1,6 @@
-﻿
+﻿@using Domain.Entities
+@model IEnumerable<Cow>
+
 @{
     ViewBag.Title = "Cows - List";
 }
@@ -14,30 +16,21 @@
             </tr>
         </thead>
         <tbody id="body_table">
-            @*<tr>
-                <td>1</td>
-                <td>24/05/2016</td>
-                <td>
-                    <a href="#" class="btn btn-primary btn-sm">
-                        <span class="glyphicon glyphicon-edit"></span>
-                    </a>
-                    <a href="#" class="btn btn-info btn-sm">
-                        <span class="glyphicon glyphicon-stats"></span>
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>24/05/2016</td>
-                <td>
-                    <a href="#" class="btn btn-primary btn-sm">
-                        <span class="glyphicon glyphicon-edit"></span>
-                    </a>
-                    <a href="#" class="btn btn-info btn-sm">
-                        <span class="glyphicon glyphicon-stats"></span>
-                    </a>
-                </td>
-            </tr>*@
+            @foreach (Cow cow in Model)
+            {
+                <tr>
+                    <td>@cow.idCow</td>
+                    <td>@cow.birthday.ToShortDateString()</td>
+                    <td>
+                        <a href="#" class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </a>
+                        <a href="@Url.Action("Details","Cow",cow.idCow)" class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-stats"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>
@@ -45,21 +38,21 @@
 @section Scripts{
     <script type="text/javascript">
         $(document).ready(function () {
-            cows = [];
-            var table = $("#table_cows").find("#body_table");
-            table.append("<tr><td colspan='3' class='text-center'>Carregando...</td>");
-            $.ajax({
-                method: "GET",
-                url: "@Url.Content("~/")api/InterfaceService/GetAllCows",
-                cache: false
-            })
-            .done(function (data) {
-                console.log(data);
-                cows = data;
-                fillTable(cows);
-            });
+            //cows = [];
+            //var table = $("#table_cows").find("#body_table");
+            //table.append("<tr><td colspan='3' class='text-center'>Carregando...</td>");
+            //$.ajax({
+            //    method: "GET",
+            //    url: "@Url.Content("~/")api/InterfaceService/GetAllCows",
+            //    cache: false
+            //})
+            //.done(function (data) {
+            //    console.log(data);
+            //    cows = data;
+            //    fillTable(cows);
+            //});
 
-            
+
             //var $table = $("#table_cows");
             //$table.bootstrapTable({ data: cows });
         });
@@ -73,8 +66,8 @@
                 "<a href='@Url.Action("Details","Cow")/" + cows[i].idCow + "' class='btn btn-info btn-sm'> " +
                 "    <span class='glyphicon glyphicon-stats'></span> " +
                 " </a> ";
-                 $(table).append("<tr><td>" + cows[i].idCow + "</td><td>" + cows[i].birthday + "</td><td>"+actions+"</td></tr>");
-                
+                $(table).append("<tr><td>" + cows[i].idCow + "</td><td>" + cows[i].birthday + "</td><td>" + actions + "</td></tr>");
+
             }
         }
     </script>

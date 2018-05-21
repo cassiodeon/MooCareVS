@@ -50,5 +50,21 @@ namespace Services
 
             return amoutFood;
         }
+
+        public List<Food> GetAllFoodByCow(int idCow)
+        {
+            return foodRepo.GetFoodByCow(idCow).ToList();
+        }
+
+        public double GetFoodByCowToday(int idCow)
+        {
+            Food FoodToday = foodRepo.GetFoodByQuery(f => f.idCow == idCow && f.date == DateTime.Today).FirstOrDefault();
+            return FoodToday.quantity;
+        }
+
+        internal List<Food> GetFoodByLactation(int idLactation)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

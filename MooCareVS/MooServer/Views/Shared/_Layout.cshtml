@@ -66,9 +66,9 @@
                 if (data != null) {
                     var notifications = data;
                     for (var i = 0; i < notifications.length; i++) {
-                        message = "A problem with <b>COW " + notifications[i].idCow + "</b> was identified! \n"+
-                                "Type problem: <b>" + notifications[i].type + "</b>. \n"+
-                                "<span class='pull-right'>Click <a href='#'> here</a> for more information.</span>";
+                        message = "A problem with <b>COW " + notifications[i].idCow + "</b> was identified! \n" +
+                                "Type problem: <b>" + notifications[i].type + "</b>. \n" +
+                                "<span class='pull-right'>Click <a href='@Url.Content("~/")Cow/Details/" + notifications[i].idCow + "'> here</a> for more information.</span>";
                         msg(message, "error");
                     }
                     console.log(data);
