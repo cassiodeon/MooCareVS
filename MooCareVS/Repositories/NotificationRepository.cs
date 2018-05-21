@@ -28,7 +28,9 @@ namespace Repositories
 
         public IEnumerable<Notification> GetNotificationByRead(bool read)
         {
-            return db.Notifications.Where(n => n.read == read);
+            return db.Notifications
+                .Include("lactation.cow")
+                .Where(n => n.read == read);
         }
 
         public IEnumerable<Notification> GetNotificationByCow(int idCow)

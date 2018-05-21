@@ -20,7 +20,7 @@
             <a href="#food" aria-controls="food" role="tab" data-toggle="tab">Food</a>
         </li>
         <li role="presentation">
-            <a href="#notification" aria-controls="notification" role="tab" data-toggle="tab">Notification</a>
+            <a href="#notification" aria-controls="notification" role="tab" data-toggle="tab">Notification <span class="badge alert-danger" name="number_notifications"></span></a>
         </li>
     </ul>
 
@@ -68,16 +68,16 @@
             </div>
         </div>
 
-        <div role="tabpanel" class="tab-pane active" id="food">
+        <div role="tabpanel" class="tab-pane" id="food">
             <div>
                 <h4>Food</h4>
                 <canvas id="chartFood"></canvas>
             </div>
         </div>
 
-        <div role="tabpanel" class="tab-pane active" id="notification">
+        <div role="tabpanel" class="tab-pane" id="notification">
             <div>
-                <h4>Notifications</h4>
+                <h4>Notifications <span class="badge alert-danger" name="number_notifications"></span></h4>
                 <table class="table table-responsive table-striped" id="table_lactations">
                     <thead>
                         <tr>
@@ -88,10 +88,25 @@
                             <th width="15%">Actions</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        @foreach (Notification notify in ViewBag.notifications)
+                        {
+                            <tr @(notify.read == false ?"class='danger'":"")>
+                                <td>@notify.idNotification</td>
+                                <td>@notify.type</td>
+                                <td>@notify.idLactation</td>
+                                <td>@(notify.read? "Read":"Not read")</td>
+                                <td>
+                                    <a href='javascript:void(0)' class='btn btn-info btn-sm'>
+                                        <span class='glyphicon glyphicon-eye-open'></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
                 </table>
             </div>
         </div>
-
 
     </div>
 </div>
@@ -99,12 +114,15 @@
 @section Scripts{
     <script type="text/javascript">
         var lactations = @Html.Raw(Json.Encode(Model));
+        var notifications = @Html.Raw(Json.Encode(ViewBag.notifications));
         var currentLactation = null;
         var lastLactation = null;
         var threshould = null;
+        var prediction = null;
 
         currentLactation = @Html.Raw(Json.Encode(ViewBag.currentLactation));
         lastLactation = @Html.Raw(Json.Encode(ViewBag.lastLactation));
+
         var labels;
         if(lastLactation != null){
             labels = Array.apply(null, {length: lastLactation.length}).map(Function.call, Number);
@@ -113,6 +131,22 @@
             labels = Array.apply(null, {length: currentLactation.length}).map(Function.call, Number);
         }
 
+        if(currentLactation != null){
+            //prediction = @Html.Raw(Json.Encode(ViewBag.currentLactation));
+            
+            prediction = Array.apply(null, {length: (currentLactation.length + AHEAD - 1)}).map(function(e,i){return NaN});
+            prediction[currentLactation.length - 1] = currentLactation[currentLactation.length - 1];
+
+            console.log("forecastValue = "+ @ViewBag.forecastValue);
+
+            forecastValue = "@ViewBag.forecastValue";
+            console.log("forecastValue 1 = "+ forecastValue);
+            forecastValue = forecastValue.replace(",",".");
+            console.log("forecastValue 2 = "+ forecastValue);
+
+            prediction.push(forecastValue);
+            console.log(prediction);
+        }
 
         var charAnalysis = document.getElementById("chartAnalysis").getContext('2d');
         var myLineChart = new Chart(charAnalysis, {
@@ -121,20 +155,31 @@
                 labels: labels,
                 datasets: [
                     {
-                        label: 'Lactação Atual',
+                        label: 'Current Lactation',
                         backgroundColor: "#003300",
                         borderColor: "#003300",
                         fill: false,
-                        data: currentLactation
+                        data: currentLactation //[NaN,NaN,NaN,NaN,NaN,NaN,20.17,27.83, 19.98,21.34, 28.88, 26.95]//currentLactation
                     }, {
-                        label: 'Lactação Anterior',
+                        label: 'Prediction',
+                        backgroundColor: "#649bed",
+                        borderColor: "#649bed",
+                        fill: false,
+                        borderDash: [2.0],
+                        spanGaps: true,
+                        pointRadius: 4,
+                        pointHoverRadius: 4,
+                        pointHitRadius: 10,
+                        data: prediction//[NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,26.95,NaN,NaN,NaN,NaN,NaN,NaN,NaN, 27.5]
+                    },{
+                        label: 'Previous Lactation',
                         backgroundColor: "#66ff66",
                         borderColor: "#66ff66",
                         fill: false,
                         lineTension: 0.1,
                         data: lastLactation
                     },{
-                        label: 'Limite - Threshould',
+                        label: 'Threshould - 20%',
                         backgroundColor: "#f75050",
                         borderColor: "#f75050",
                         fill: false,
@@ -161,6 +206,10 @@
 
         var l;
         $(document).ready(function () {
+            numberNotificationsNotRead = notifications.filter(function(e){ if(!e.read){return e}}).length;
+            numberNotificationsNotRead = (numberNotificationsNotRead > 0 ? numberNotificationsNotRead : "");
+            $("[name='number_notifications']").html(numberNotificationsNotRead);
+
             $("#table_lactations #body_table tr").click(function () {
                 idLactation = $(this).data("idLactation");
                 $.ajax({

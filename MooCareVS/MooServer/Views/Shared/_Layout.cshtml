@@ -39,22 +39,44 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/chart")
+    @Scripts.Render("~/bundles/pnotify")
+    
+    <script type="text/javascript">
+        var AHEAD = 7;
+
+        function msg(message, type) {
+            new PNotify({
+                type: type,
+                text: message,
+                delay: 4000,
+                shadow: true,
+                width: "400px",
+                opacity: "1",
+                hide: false
+            });
+        }
+
+        $(document).ready(function () {
+            $.ajax({
+                method: "GET",
+                url: "@Url.Content("~/")api/InterfaceService/GetNewsNotifications",
+                cache: false
+            })
+            .done(function (data) {
+                if (data != null) {
+                    var notifications = data;
+                    for (var i = 0; i < notifications.length; i++) {
+                        message = "A problem with <b>COW " + notifications[i].idCow + "</b> was identified! \n"+
+                                "Type problem: <b>" + notifications[i].type + "</b>. \n"+
+                                "<span class='pull-right'>Click <a href='#'> here</a> for more information.</span>";
+                        msg(message, "error");
+                    }
+                    console.log(data);
+                }
+            });
+        });
+    </script>
     @RenderSection("scripts", required: false)
 
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $.ajax({
-                    method: "GET",
-                    url: "@Url.Content("~/")api/InterfaceService/GetNewsNotifications",
-                    cache: false
-                })
-                .done(function (data) {
-                    if (data != null) {
-                        alert(data);
-                    }
-                });
-            });
-        </script>
-    
 </body>
 </html>

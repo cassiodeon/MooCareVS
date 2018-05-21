@@ -23,8 +23,12 @@ namespace MooServer
             bundles.Add(new ScriptBundle("~/bundles/chart").Include(
                       "~/Scripts/Chart.min.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/pnotify").Include(
+                      "~/Scripts/pnotify.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/pnotify.css",
                       "~/Content/site.css"));
         }
     }

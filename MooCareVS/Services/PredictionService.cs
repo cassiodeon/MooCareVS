@@ -52,7 +52,7 @@ namespace Services
             return forecastValue;
         }
 
-        private double ForecastValue(int idCow)
+        public double ForecastValue(int idCow)
         {
             double forecastValue = 0;
             //string rScript = "";

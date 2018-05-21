@@ -7,6 +7,7 @@ using System.Web.Http;
 using Services;
 using Domain.Entities;
 using MooServer.Models.DTO;
+using MooServer.Models;
 
 namespace MooServer.Controllers
 {
@@ -50,10 +51,23 @@ namespace MooServer.Controllers
             return dtoLac;
         }
 
-        public List<Notification> GetNewsNotifications()
+        [HttpGet]
+        [Route("~/api/InterfaceService/GetNewsNotifications")]
+        public List<DTO_NewNotification> GetNewsNotifications()
         {
             List<Notification> notif = interfaceService.GetNotificationNotRead();
-            return notif;
+            List<DTO_NewNotification> news = (from n in notif
+                                              select new DTO_NewNotification
+                                              {
+                                                  idNotification = n.idNotification,
+                                                  idCow = n.lactation.idCow,
+                                                  description = n.description,
+                                                  idLactation = n.idLactation,
+                                                  read = n.read,
+                                                  type = n.type
+                                              }).ToList();
+
+            return news;
         }
     }
 }

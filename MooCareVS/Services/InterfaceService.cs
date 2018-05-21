@@ -14,12 +14,14 @@ namespace Services
         CowRepository cowRepo;
         LactationRepository lactationRepo;
         NotificationRepository notificationRepo;
+        PredictionService predictionService;
 
         public InterfaceService()
         {
             cowRepo = new CowRepository();
             lactationRepo = new LactationRepository();
             notificationRepo = new NotificationRepository();
+            predictionService = new PredictionService();
         }
 
         public List<Cow> GetAllCows()
@@ -47,6 +49,11 @@ namespace Services
             return notificationRepo.GetNotificationByRead(false).ToList();
         }
 
+        public List<Notification> GetNotificationCow(int idCow)
+        {
+            return notificationRepo.GetNotificationByCow(idCow).ToList();
+        }
+
         public double[] GetLactationEMA(int idLactation)
         {
             double[] lactationEMA;
@@ -68,6 +75,13 @@ namespace Services
             }
 
             return lactationEMA;
+        }
+
+        public double GetPrediction(int idCow)
+        {
+            double predictionValue;
+            predictionValue = predictionService.ForecastValue(idCow);
+            return predictionValue;
         }
     }
 }
