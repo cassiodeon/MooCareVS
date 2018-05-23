@@ -26,9 +26,14 @@ namespace Services
             foodService = new FoodService();
         }
 
-        public List<Cow> GetAllCows()
+        public List<Cow> GetAllCows(string[] includes = null)
         {
-            return cowRepo.GetAllCows().ToList();
+            return cowRepo.GetAllCows(includes).ToList();
+        }
+
+        public List<Cow> GetCowsByStatus(bool deleted)
+        {
+            return cowRepo.GetCowByQuery(c => c.deleted == deleted).ToList();
         }
 
         public List<Lactation> GetLactationCow(int idCow)
@@ -97,6 +102,11 @@ namespace Services
         public double GetFoodByCowToday(int idCow)
         {
             return foodService.GetFoodByCowToday(idCow);
+        }
+
+        public List<Cow> GetCowsWithNotification()
+        {
+            return notificationRepo.GetCowsWithNotification().ToList();
         }
     }
 }

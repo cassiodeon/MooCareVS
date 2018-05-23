@@ -14,6 +14,8 @@ namespace Domain.Entities
         [Key]
         public int idCow { get; set; }
         public DateTime birthday { get; set; }
+        public int numberTag { get; set; }
+        public bool deleted { get; set; }
 
         [ForeignKey("idCow")]
         public virtual ICollection<Lactation> lactations { get; set; }

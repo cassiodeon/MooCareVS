@@ -1,4 +1,6 @@
-﻿<div>
+﻿@using MooServer.Models.DTO
+@model DTO_Dashboard
+<div>
     <h2>Dashboard</h2>
     <div class="row">
         <div class="col-md-6">
@@ -41,7 +43,7 @@
                 data: {
                     "labels": ["Cow Without Notification", "Cows With Notification"],
                     "datasets": [{
-                        "data": [30, 0],
+                        "data": [@Model.quantityCowsWithoutNotify, @Model.quantityCowsWithNotify],
                         "backgroundColor": ["#47a447", "#f75050"]
                     }]
                 }
@@ -53,7 +55,7 @@
                 data: {
                     "labels": ["Notification Read", "Notification NOT Read"],
                     "datasets": [{
-                        "data": [0, 0],
+                        "data": [@Model.quantityNotifyRead, @Model.quantityNotifyNotRead],
                         "backgroundColor": ["#2a6496", "#f75050"]
                     }]
                 }

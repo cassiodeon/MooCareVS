@@ -51,5 +51,13 @@ namespace Repositories
             notificationUpdate.read = notification.read;
             db.SaveChanges();
         }
+
+        public IEnumerable<Cow> GetCowsWithNotification()
+        {
+            return db.Notifications
+                    .Where(n => n.lactation.finished == false)
+                    .GroupBy(n => n.idLactation)
+                    .Select(n => n.FirstOrDefault().lactation.cow);
+        }
     }
 }

@@ -138,11 +138,8 @@
         var prediction = null;
 
         currentLactation = @Html.Raw(Json.Encode(ViewBag.currentLactation));
-        console.log("currentLactation");
-        console.log(currentLactation);
         lastLactation = @Html.Raw(Json.Encode(ViewBag.lastLactation));
-        console.log("lastLactation");
-        console.log(lastLactation);
+        
         var labels;
         if(lastLactation != null){
             labels = Array.apply(null, {length: lastLactation.length}).map(Function.call, Number);

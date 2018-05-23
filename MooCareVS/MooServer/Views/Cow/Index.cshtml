@@ -11,8 +11,9 @@
         <thead>
             <tr>
                 <th width="10%" data-field="idCow">ID</th>
-                <th width="75%" data-field="birthday">Date</th>
-                <th width="15%">Actions</th>
+                <th width="20%" data-field="idCow">Number Tag</th>
+                <th width="55%" data-field="birthday">Date</th>
+                <th width="15%" class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody id="body_table">
@@ -20,12 +21,13 @@
             {
                 <tr>
                     <td>@cow.idCow</td>
+                    <td>@cow.numberTag</td>
                     <td>@cow.birthday.ToShortDateString()</td>
-                    <td>
+                    <td class="text-center">
                         <a href="#" class="btn btn-primary btn-sm">
                             <span class="glyphicon glyphicon-edit"></span>
                         </a>
-                        <a href="@Url.Action("Details","Cow",cow.idCow)" class="btn btn-info btn-sm">
+                        <a href="@Url.Action("Details","Cow")/@cow.idCow" class="btn btn-info btn-sm">
                             <span class="glyphicon glyphicon-stats"></span>
                         </a>
                     </td>
