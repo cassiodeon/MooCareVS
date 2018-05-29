@@ -18,15 +18,19 @@ namespace Services
             repoCow = new CowRepository();
         }
 
-        public bool AddYield(int idCow, double yieldMilk)
+        public bool AddYield(int idCow, double yieldMilk, DateTime? date = null)
         {
             try
             {
+                DateTime dateYield;
+                dateYield = (date ?? DateTime.Now);
+                dateYield = new DateTime(dateYield.Year, dateYield.Month, dateYield.Day);
+                
                 //Verifica se a vaca existe
                 Cow cowValid = repoCow.GetCow(idCow);
                 if(cowValid != null){
                     Lactation currentLact = cowValid.lactations.FirstOrDefault(l => l.finished == false);
-                    Yield yieldDay = currentLact.yields.FirstOrDefault(y => y.date.Year == DateTime.Now.Year && y.date.Month == DateTime.Now.Month && y.date.Day == DateTime.Now.Day);
+                    Yield yieldDay = currentLact.yields.FirstOrDefault(y => y.date.Year == dateYield.Year && y.date.Month == dateYield.Month && y.date.Day == dateYield.Day);
                     if (yieldDay == null)
                     {
                         //Insere os dados na lactação corrente
@@ -34,7 +38,8 @@ namespace Services
                         {
                             idLactation = currentLact.idLactation,
                             totalYield = yieldMilk,
-                            date = DateTime.Now
+                            date = dateYield,
+                            dayLactation = (int)(dateYield - currentLact.dateBirth).TotalDays
                         };
                         repoCow.AddYield(yield);
                     }else
@@ -48,7 +53,7 @@ namespace Services
             }
             catch (Exception e)
             {
-                throw;
+                //throw;
             }
 
             return false;

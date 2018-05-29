@@ -67,6 +67,7 @@
     <Compile Include="Entities\Food.cs" />
     <Compile Include="Entities\Lactation.cs" />
     <Compile Include="Entities\Notification.cs" />
+    <Compile Include="Entities\Prediction.cs" />
     <Compile Include="Entities\Yield.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

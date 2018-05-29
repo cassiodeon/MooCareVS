@@ -20,5 +20,6 @@ namespace Domain
         public DbSet<Yield> Yields { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Food> Foods { get; set; }
+        public DbSet<Prediction> Predictions { get; set; }
     }
 }

@@ -67,8 +67,9 @@ namespace Services
                 if (yieldEMACurrentLactation < (yieldEMALastLactation - yieldEMALastLactation * threshould))
                 {
                     //NOTIFICAÇÃO!
+                    //VERIFICAR SE NÃO TEVE UMA GOAHED ATRAS
                     AddNotification("CURRENT", currentLactation.idLactation, "");
-                    throw new Exception("NOTIFICATION - BAD CURRENT LACTATION");
+                    //throw new Exception("NOTIFICATION - BAD CURRENT LACTATION");
                 }
             }
         }
@@ -103,8 +104,9 @@ namespace Services
                 if (forecastValue < (yieldEMALastLactation - yieldEMALastLactation * threshould))
                 {
                     //NOTIFICAÇÃO!
+                    //VERIFICAR SE NÃO TEVE UMA GOAHED ATRAS
                     AddNotification("PREDICTION", currentLactation.idLactation, "");
-                    throw new Exception("NOTIFICATION - BAD PREDICTION");
+                    //throw new Exception("NOTIFICATION - BAD PREDICTION");
                 }
             }
         }

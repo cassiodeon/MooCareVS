@@ -53,6 +53,7 @@
     <Compile Include="FoodRepository.cs" />
     <Compile Include="LactationRepository.cs" />
     <Compile Include="NotificationRepository.cs" />
+    <Compile Include="PredictionRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

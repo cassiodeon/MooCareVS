@@ -17,17 +17,18 @@ namespace Services
     {
         CowRepository repoCow;
         NotificationService notificationService;
-
+        PredictionRepository predictionRepo;
         public PredictionService()
         {
             repoCow = new CowRepository();
             notificationService = new NotificationService();
+            predictionRepo = new PredictionRepository();
         }
 
         public double ForecastYieldCow(int idCow)
         {
             double forecastValue = 0;
-            
+
             //Verifica se a vaca existe
             Cow cowValid = repoCow.GetCow(idCow);
             if (cowValid != null)
@@ -39,16 +40,27 @@ namespace Services
 
                 //Verifica se existe registros suficientes
                 if (numYields >= minRecords)
+                {
                     //Executa o script em R que calcula o valor de previsão
                     forecastValue = ForecastValue(idCow);
+                    int goahead = int.Parse(ConfigurationManager.AppSettings["goahead"]);
+                    Prediction prediction = new Prediction
+                    {
+                        idLactation = currentLact.idLactation,
+                        yield = forecastValue,
+                        dayLactationPredicted = currentLact.yields.OrderByDescending(y => y.dayLactation).FirstOrDefault().dayLactation + goahead
+                    };
+                    predictionRepo.Add(prediction);
+                }
                 else
-                    throw new Exception("Number of records is insufficient");
-
+                {
+                    //throw new Exception("Number of records is insufficient");
+                }
                 //Task.Run(() => notificationService.ValidateDataCow(idCow, currentLact, forecastValue));
                 //CHAMA SERVIÇO DE NOTIFICAÇÃO
                 notificationService.ValidateDataCow(idCow, currentLact, forecastValue);
             }
-            
+
             return forecastValue;
         }
 
@@ -89,15 +101,15 @@ namespace Services
             //bool saved = Helper.RScript.Save(rScript, "yield", true);
             //if (saved)
             //{
-                string[] param = new string[] { idCow.ToString(), goahead };
-                string result = Helper.RScript.Run("prediction-yield", param);
-                result = result.Substring(result.IndexOf(" ") + 1).Replace(Environment.NewLine, "");
-                if (result != "")
-                    forecastValue = double.Parse(result, new System.Globalization.CultureInfo("en-US"));
+            string[] param = new string[] { idCow.ToString(), goahead };
+            string result = Helper.RScript.Run("prediction-yield", param);
+            result = result.Substring(result.IndexOf(" ") + 1).Replace(Environment.NewLine, "");
+            if (result != "")
+                forecastValue = double.Parse(result, new System.Globalization.CultureInfo("en-US"));
             //}
 
             return forecastValue;
         }
-        
+
     }
 }

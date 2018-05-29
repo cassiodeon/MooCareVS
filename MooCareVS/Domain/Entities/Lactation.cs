@@ -23,5 +23,7 @@ namespace Domain.Entities
         public virtual ICollection<Yield> yields { get; set; }
         [ForeignKey("idLactation")]
         public virtual ICollection<Notification> notifications { get; set; }
+        [ForeignKey("idLactation")]
+        public virtual ICollection<Prediction> predictions { get; set; }
     }
 }
